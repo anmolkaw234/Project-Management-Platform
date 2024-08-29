@@ -1,0 +1,101 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User-Info</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css'>
+    <link rel="stylesheet" href="{% static 'project/styles.css' %}">
+</head>
+<body>
+    {% include 'navbar.html' %}
+
+    <div class="main-content" style="padding-top:97px;">
+        <ul class="nav nav-pills mb-3 center-nav" id="pills-tab" role="tablist" style="margin-top: 5px">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link {% if tab == 'info' %}active{% endif %}" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="{% if tab == 'info' %}true{% else %}false{% endif %}">
+                    Project Info
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link {% if user in project.user.all %}disable{% endif %} {% if tab == 'discussion' %}active{% endif %}" id="pills-discussions-tab" data-bs-toggle="pill" data-bs-target="#pills-discussions" type="button" role="tab" aria-controls="pills-discussions" aria-selected="{% if tab == 'discussion' %}true{% else %}false{% endif %}">
+                    Discussions
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link {% if user in project.user.all %}dsiable{% endif %} {% if tab == 'team' %}active{% endif %}" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="{% if tab == 'team' %}true{% else %}false{% endif %}">
+                    Teams & members
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link {% if user in project.user.all %}disable{% endif %} {% if tab == 'assignments' %}active{% endif %}" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="{% if tab == 'assignments' %}true{% else %}false{% endif %}">
+                    Assignments
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link {% if user in project.host.all %}disable{% endif %} {% if tab == 'settings' %}active{% endif %}" id="pills-settings-tab" data-bs-toggle="pill" data-bs-target="#pills-settings" type="button" role="tab" aria-controls="pills-settings" aria-selected="{% if tab == 'settings' %}true{% else %}false{% endif %}">
+                    Settings
+                </button>
+            </li>
+        </ul>
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+                {% include './details.html' %}
+            </div>
+            <div class="tab-pane fade" id="pills-discussions" role="tabpanel" aria-labelledby="pills-discussions-tab" tabindex="0">
+                {% if user in project.user.all %}
+                    {% include './discussion.html' %}
+                {% else %}
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong>Warning:</strong> You are not a member of this project. Please contact your admin, if it is wrong.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+                {% if user in project.user.all %}
+                    {% include './team.html' %}
+                {% else %}
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong>Warning:</strong> You are not a member of this project. Please contact your admin, if it is wrong.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
+                {% if user in project.user.all %}
+                    {% include './assignment.html' %}
+                {% else %}
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong>Warning:</strong> You are not a member of this project. Please contact your admin, if it is wrong.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="tab-pane fade" id="pills-settings" role="tabpanel" aria-labelledby="pills-settings-tab" tabindex="0">
+                {% if user in project.host.all %}
+                    {% include './settings.html' %}
+                {% else %}
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong>Warning:</strong> You are not a member of this project. Please contact your admin, if it is wrong.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+{% comment %} <script src={% static "project/script.js" %} > {% endcomment %}
+<script src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js'></script>
+</body>
+</html>

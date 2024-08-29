@@ -1,0 +1,172 @@
+.nav-pills .nav-item .active {
+    border-bottom: 2px solid var(--primary);
+}
+
+.profile-list-container {
+  padding: 20px;
+}
+
+.profile-item {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  transition: transform 0.2s;
+}
+
+.profile-item:hover {
+  transform: translateY(-5px);
+}
+
+.profile-item img {
+  max-width: 100%;
+  border-radius: 50%;
+}
+
+.cat-item {
+  position: relative;
+  overflow: hidden;
+  border: 2px solid lightgreen; /* Light green border */
+  padding: 20px;
+  background-color: #ffffff;
+  transition: transform 0.3s ease-in-out;
+}
+
+.cat-item::before {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 200%;
+  height: 200%;
+  background: rgba(0, 255, 0, 0.1); /* Light green background */
+  transition: top 0.5s ease-in-out;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.cat-item:hover::before {
+  top: 50%;
+  background: rgba(0, 255, 0, 0.3); /* Slightly darker green on hover */
+}
+
+.cat-item.active::before {
+  top: 0;
+  background: rgba(0, 255, 0, 0.5); /* Darker green when clicked (active) */
+}
+
+/* Profiles */
+.job-item {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.job-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.job-name {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.job-profession {
+  font-size: 1rem;
+  color: #6c757d;
+}
+
+.job-location, .job-times, .job-wages, .job-experience {
+  font-size: 0.875rem;
+  color: #6c757d;
+}
+
+.job-location i, .job-times i, .job-wages i, .job-experience i {
+  color: #007bff;
+}
+
+.btn-square {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.btn-square:hover {
+  background-color: #f8f9fa;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+@media (max-width: 767.98px) {
+  .job-item {
+    padding: 20px;
+  }
+  
+  .job-name {
+    font-size: 1.1rem;
+  }
+  
+  .job-profession {
+    font-size: 0.95rem;
+  }
+  
+  .job-location, .job-times, .job-wages, .job-experience {
+    font-size: 0.8rem;
+  }
+}
+
+.animated-nav-link {
+  position: relative;
+  transition: color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.animated-nav-link::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: #007bff;
+  transition: width 0.3s ease-in-out, left 0.3s ease-in-out;
+}
+
+.animated-nav-link:hover::before {
+  width: 100%;
+  left: 0;
+}
+
+.animated-nav-link:hover {
+  color: #007bff;
+  transform: scale(1.1);
+}
+
+.animated-nav-link.active {
+  color: #007bff;
+}
+
+.animated-nav-link.active::before {
+  width: 100%;
+  left: 0;
+}
+
+.animated-nav-link h6 {
+  transition: transform 0.3s ease-in-out;
+}
+
+.animated-nav-link:active h6 {
+  transform: scale(0.95);
+}

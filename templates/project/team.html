@@ -1,0 +1,204 @@
+<!-- Teams & Members -->
+
+<script>
+    document.getElementById('addPeerForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const alertHtml = `
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>Notice:</strong> Request Email has been sent.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        `;
+
+        const alertContainer = document.getElementById('alert-container');
+        alertContainer.innerHTML = alertHtml;
+    });
+</script>
+
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Current Members</h2>
+        <div>
+            <a href="{% url 'colab' %}" class="btn btn-primary me-2">Find Peers</a>
+            <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addPeerModal">Add Peer</a>
+        </div>
+    </div>
+    <div class="row">
+        <div id="alert-container"></div>
+        {% for member in users %}
+        <div class="col-lg-4">
+            <div class="card m-b-30">
+                <div class="card-body">
+                    <div class="media">
+                        <img class="d-flex mr-3 rounded-circle img-thumbnail thumb-lg" 
+                            src="{% if member.profile %}{{ member.profile }}{% else %}http://bootdey.com/img/Content/avatar/avatar1.png{% endif %}" 
+                            alt="{{ member.name }}" />
+                        <div class="media-body">
+                            <h5 class="mt-0 font-18 mb-1">{{ member.name }}</h5>
+                            <p class="text-muted font-14">{{ member.role }}</p>
+                            <ul class="social-links list-inline mb-0">
+                                <!-- Placeholder links -->
+                                <li class="list-inline-item">
+                                    <a title="Facebook" data-placement="top" data-toggle="tooltip" class="tooltips" href="#"><i class="fa fa-facebook"></i></a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a title="Twitter" data-placement="top" data-toggle="tooltip" class="tooltips" href="#"><i class="fa fa-twitter"></i></a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a title="Phone" data-placement="top" data-toggle="tooltip" class="tooltips" href="#"><i class="fa fa-phone"></i></a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a title="Skype" data-placement="top" data-toggle="tooltip" class="tooltips" href="#"><i class="fa fa-skype"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<!-- Modal for Adding Peer -->
+<div class="modal fade" id="addPeerModal" tabindex="-1" aria-labelledby="addPeerModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addPeerModalLabel">Add Someone to Project</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addPeerForm" method="post">
+                    <div class="mb-3">
+                        <label for="peerSelect" class="form-label">Select Peer</label>
+                        <input type="text" class="form-control" name="name" placeholder="Enter name" required>
+                        <input type="hidden" name="member" value=1>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Peer</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="alert alert-warning alert-dismissible fade show" role="alert" id="alert-template" style="display: none;">
+    <strong>Notice:</strong> Invite request sent to the user.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+<hr />
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-margin">
+                <div class="card-body">
+                    <div class="row search-body">
+                        <div class="col-lg-12">
+                            <div class="search-result">
+                                <div class="result-header">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="records">Potential Members</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="result-body">
+                                    <div class="table-responsive">
+                                        <table class="table widget-26">
+                                            <thead>
+                                                <tr>
+                                                    <th>Profile</th>
+                                                    <th>Name</th>
+                                                    <th>Role</th>
+                                                    <th>Type</th>
+                                                    <th>Wages</th>
+                                                    <th>Expertise</th>
+                                                    <th>Options</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for member in potential_users %}
+                                                <tr>
+                                                    <td>
+                                                        <div class="widget-26-job-emp-img">
+                                                            <img class="d-flex mr-3 rounded-circle img-thumbnail thumb-lg" 
+                                                                src="{% if member.user.profile %}{{ member.user.profile }}{% else %}http://bootdey.com/img/Content/avatar/avatar1.png{% endif %}" 
+                                                                alt="{{ member.username }}" />
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        {{member.username}}
+                                                    </td>
+                                                    <td>
+                                                        <div class="widget-26-job-title">
+                                                            <a href="#">{{member.role}}</a>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="widget-26-job-info">
+                                                            <p class="type m-0">{{member.user.organization_name}}</p>
+                                                            <p class="text-muted m-0">in <span class="location">{{member.user.location}}</span></p>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="widget-26-job-salary">$ {{member.user.wage}}/hr</div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="widget-26-job-category bg-soft-base">
+                                                            <i class="indicator bg-base"></i>
+                                                            <span>{{member.user.expertise}}</span>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <form method="post">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="hire" value={{member.id}}>
+                                                            <input type="hidden" name="members" value=1>
+                                                            <button type="submit" class="btn btn-info btn-xs">
+                                                                <i class="fa fa-pencil"></i> Hire
+                                                            </button>
+                                                        </form>
+                                                        <form method="post" style="display:inline;">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="delete" value={{member.id}}>
+                                                            <input type="hidden" name="members" value=1>
+                                                            <button type="submit" class="btn btn-danger btn-xs">
+                                                                <i class="fa fa-trash-o"></i> Delete
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('addPeerForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the form from submitting normally
+            
+            // Show the alert
+            var alertTemplate = document.getElementById('alert-template');
+            var alertContainer = document.getElementById('alert-container');
+            
+            // Clone the alert template and append it to the alert container
+            var alertClone = alertTemplate.cloneNode(true);
+            alertClone.style.display = 'block';
+            alertContainer.appendChild(alertClone);
+            
+            // Close the modal
+            var modal = new bootstrap.Modal(document.getElementById('addPeerModal'));
+            modal.hide();
+        });
+    });
+</script>

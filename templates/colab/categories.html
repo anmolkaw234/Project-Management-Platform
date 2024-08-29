@@ -1,0 +1,112 @@
+<style>
+    .cat-item {
+        position: relative;
+        overflow: hidden;
+        border: 2px solid lightgreen; /* Light green border */
+        padding: 20px;
+        background-color: #ffffff;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .cat-item::before {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        width: 200%;
+        height: 200%;
+        background: rgba(0, 255, 0, 0.1); /* Light green background */
+        transition: top 0.5s ease-in-out;
+        transform: translateX(-50%) rotate(45deg);
+    }
+
+    .cat-item:hover::before {
+        top: 50%;
+        background: rgba(0, 255, 0, 0.3); /* Slightly darker green on hover */
+    }
+
+    .cat-item.active::before {
+        top: 0;
+        background: rgba(0, 255, 0, 0.5); /* Darker green when clicked (active) */
+    }
+</style>
+
+<div class="container-xxl py-5">
+    <div class="container">
+      <h1 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">Explore By Profession</h1>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="cat-item text-center">
+            <div class="category-icon mb-3">
+              <i class="fa fa-mail-bulk"></i>
+            </div>
+            <h4 class="category-name">Marketing</h4>
+            <p class="category-available">123 Profiles Available</p>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="cat-item text-center">
+            <div class="category-icon mb-3">
+              <i class="fa fa-headset"></i>
+            </div>
+            <h4 class="category-name">Customer Service</h4>
+            <p class="category-available">123 Profiles Available</p>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="cat-item text-center">
+            <div class="category-icon mb-3">
+              <i class="fa fa-user-tie"></i>
+            </div>
+            <h4 class="category-name">Human Resource</h4>
+            <p class="category-available">123 Profiles Available</p>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="cat-item text-center">
+            <div class="category-icon mb-3">
+              <i class="fa fa-tasks"></i>
+            </div>
+            <h4 class="category-name">Project Management</h4>
+            <p class="category-available">123 Profiles Available</p>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="cat-item text-center">
+            <div class="category-icon mb-3">
+              <i class="fa fa-chart-line"></i>
+            </div>
+            <h4 class="category-name">Business Development</h4>
+            <p class="category-available">123 Profiles Available</p>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="cat-item text-center">
+            <div class="category-icon mb-3">
+              <i class="fa fa-hands-helping"></i>
+            </div>
+            <h4 class="category-name">Communication</h4>
+            <p class="category-available">123 Profiles Available</p>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="cat-item text-center">
+            <div class="category-icon mb-3">
+              <i class="fa fa-book-reader"></i>
+            </div>
+            <h4 class="category-name">Web Development</h4>
+            <p class="category-available">123 Profiles Available</p>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="cat-item text-center">
+            <div class="category-icon mb-3">
+              <i class="fa fa-drafting-compass"></i>
+            </div>
+            <h4 class="category-name">Design & Creative</h4>
+            <p class="category-available">123 Profiles Available</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

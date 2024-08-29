@@ -1,0 +1,139 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects</title>
+    {% comment %} <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> {% endcomment %}
+    {% comment %} <link rel='stylesheet' href='https://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'> {% endcomment %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'projects/styles.css' %}">
+</head>
+<body>
+    {% include 'navbar.html' %}
+    
+    <div class="container" style="padding-top:10em;">
+        <section class="panel">
+            <header class="panel-heading">
+                All projects List
+                    <button type="button" id="loading-btn" class="btn btn-warning btn-sm"><i class="fa fa-refresh"></i> Refresh</button>
+                    <a href="addproject" class="btn btn-success btn-sm"> Create New Project</a>
+            </header>
+            <div class="panel-body">
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <input type="text" placeholder="Search Here" class="form-control form-control-sm"> 
+                            <button type="button" class="btn btn-success btn-sm"> Go!</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-hover p-table">
+                <thead>
+                    <tr>
+                        <th>Project Name</th>
+                        <th>Team Members</th>
+                        <th>Project Progress</th>
+                        <th>Project Status</th>
+                        <th>Custom</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if projects %}
+                        {% for project in projects %}
+                            <tr>
+                                <td class="p-name">
+                                    {{ project.title }}
+                                    <br>
+                                    <small>Created {{ project.start_date|date:"d.m.Y" }}</small>
+                                </td>
+                                <td class="p-team">
+                                    {% for member in project.user.all %}
+                                        <a href="#"><img alt="image" 
+                                            src="{% if member.user.profile %}{{ member.user.profile }}
+                                                {% else %}http://bootdey.com/img/Content/avatar/avatar1.png{% endif %}"
+                                            class="img-thumbnail" style="width: 35px; height: 35px; border-radius: 4px;"></a>
+                                    {% endfor %}
+                                </td>
+                                <td class="p-progress">
+                                    <div class="progress">
+                                        <div style="width: {{ project.progress }}%;" class="progress-bar progress-bar-striped progress-bar-animated bg-success"></div>
+                                    </div>
+                                    <small>{{ project.progress }}% Complete</small>
+                                </td>
+                                <td>
+                                    {% if project.status == 'Active' or project.status == 'Ongoing' %}
+                                        <span class="badge bg-primary">Active</span>
+                                    {% endif %}
+
+                                    {% if project.status == 'Suspended' %}
+                                        <span class="badge bg-warning">Suspended</span>
+                                    {% endif %}
+
+                                    {% if project.status == 'Deleted' %}
+                                        <span class="badge bg-danger">Deleted</span>
+                                    {% endif %}
+
+                                    {% if project.status == 'Completed' %}
+                                    <span class="badge bg-secondary">Completed</span>
+                                    {% endif %}
+
+                                    {% if project.open_for_hire %}
+                                        <span class="badge bg-success">Open for Hire</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">Closed</span>
+                                    {% endif %}
+
+                                </td>
+                                <td>
+                                    <a href="{% url 'project' project.id 'info' %}" class="btn btn-primary btn-sm">
+                                        <i class="fa fa-folder"></i> View
+                                    </a>
+                                    
+                                    {% if user in project.host.all %}
+                                        <a href="{% url 'project' project.id 'settings' %}" class="btn btn-info btn-sm">
+                                            <i class="fa fa-pencil"></i> Edit
+                                        </a>
+                                        <button class="btn btn-danger btn-sm" onclick="confirmDelete('{{ project.id }}', '{{ project.title }}')">
+                                            <i class="fa fa-trash-o"></i> Delete
+                                        </button>
+                                    {% endif %}
+                                    
+                                    {% if user not in project.user.all and user not in project.potential_user.all %}
+                                        <a href="{% url 'project' project.id 'info' %}" class="btn btn-success btn-sm">
+                                            <i class="fa fa-pencil"></i> Join
+                                        </a> 
+                                    {% endif %}
+                                </td>
+                                <form id="delete-form-{{ project.id }}" method="POST" action="{% url 'project' project.id 'settings' %}" style="display: none;">
+                                    {% csrf_token %}
+                                </form>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5">No projects found</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.min.js"></script>
+{% comment %} <script src='https://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js'></script> {% endcomment %}
+<script type="text/javascript">
+    function confirmDelete(link, projectTitle) {
+        if (confirm(`Are you sure you want to delete the project "${projectTitle}"?`)) {
+            document.getElementById('delete-form-' + projectId).submit();
+        }
+    }
+</script>
+
+</body>
+</html>

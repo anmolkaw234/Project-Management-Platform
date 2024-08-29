@@ -1,0 +1,32 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create-Project</title>
+    <link rel="stylesheet" href="{% static 'create-project/styles.css' %}">
+</head>
+<body>
+    <div class="wrapper">
+        <div class="title-text">
+            <div class="title login">Register Project</div>
+        </div>
+        <div class="form-container">
+            <div class="form-inner">
+                <form action="{% url 'create-project' %}" method="post" class="login">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div class="field btn">
+                        <div class="btn-layer"></div>
+                        <input type="submit" value="Create Project">
+                    </div>
+                </form>
+            </div>
+          </div>
+        </div>
+    </div>  
+</body>
+</html>

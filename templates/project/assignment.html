@@ -1,0 +1,195 @@
+<!-- Assignments -->
+
+{% load static %}
+
+<script>
+    // Dummy data for tasks
+    const tasks = JSON.parse('{{ assignments|safe }}');
+
+    // Function to create the HTML for each task
+    function createTaskHTML(tasks) {
+        let html = '<div class="container-fluid py-5">';
+        let rowOpen = false;
+
+        tasks.forEach((task, index) => {
+            if (index % 3 === 0) {
+                if (rowOpen) {
+                    html += '</div>'; // Close the previous row
+                }
+                html += '<div class="row">'; // Start a new row
+                rowOpen = true;
+            }
+
+            html += `
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                {% comment %} <div class="col-3 text-center">
+                                    <img src="${task.img}" alt="${task.name}" class="rounded-circle" style="width: 100px; height: 100px;">
+                                </div> {% endcomment %}
+                                <div class="col-9">
+                                    <h2 class="mb-1">Task: ${task.name}</h2>
+                                    <p class="text-muted mb-1">Project: ${task.project}</p>
+                                    <p class="text-muted">
+                                        <i class="far fa-clock text-primary me-2"></i>
+                                        Deadline: ${task.deadline}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <h5>Description</h5>
+                                    <p>${task.description}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <h5>Submit Digital Work</h5>
+                            <form>
+                                <div class="mb-3">
+                                    <label for="formFile" class="form-label">Upload your work</label>
+                                    <input class="form-control" type="file" id="formFile" name="file">
+                                </div>
+                                <button type="submit" class="btn btn-primary me-2">Submit</button>
+                                <button type="button" class="btn btn-success" onclick="alert('Task marked as done!')">Mark as Done</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        if (rowOpen) {
+            html += '</div>'; 
+        }
+
+        html += '</div>';
+        return html;
+    }
+
+    // Function to display the tasks
+    function displayTasks(filteredTasks) {
+        const tasksContainer = document.getElementById('tasks-container');
+        tasksContainer.innerHTML = createTaskHTML(filteredTasks);
+    }
+
+    // Function to filter the tasks based on the search input
+    function filterTasks() {
+        const searchInput = document.getElementById('search-input').value.toLowerCase();
+        const filteredTasks = tasks.filter(task =>
+            task.name.toLowerCase().includes(searchInput) ||
+            task.project.toLowerCase().includes(searchInput) ||
+            task.description.toLowerCase().includes(searchInput)
+        );
+        displayTasks(filteredTasks);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        displayTasks(tasks);
+        document.getElementById('filter-button').addEventListener('click', filterTasks);
+    });
+</script>
+
+<div class="container-fluid">
+    <div class="col">
+      <div class="col mb-3">
+        <div class="card h-20">
+          <h2 class="card-header">Assignments</h2>
+          <div class="card-body">
+            <div class="row mb-3">
+              <div class="col-md-8">
+                <input type="text" id="search-input" class="form-control" placeholder="Search tasks">
+              </div>
+              <div class="col-md-2">
+                <div class="d-grid gap-2">
+                  <button id="filter-button" class="btn btn-primary">Filter</button>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="d-grid gap-2">
+                  <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addTaskModal">Add Task</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addTaskModalLabel">Add Task</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label" for="task-name">Task Name</label>
+                            <input type="text" class="form-control" id="task-name" name="title" placeholder="Enter task name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="task-deadline">Deadline</label>
+                            <input type="date" class="form-control" id="task-deadline" name="end_date" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="task-description">Description</label>
+                            <textarea class="form-control" id="task-description" name="description" rows="4" placeholder="Enter task description" required></textarea>
+                        </div>
+                        <input type="hidden" name="add" value=1>
+                        <input type="hidden" name="assignment" value=1>
+                        <button type="submit" class="btn btn-primary">Add Task</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        </div>
+      <div class="col">
+        <div id="tasks-container">
+            <div id="tasks-container">
+                {% for task in assignments %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <div class="row mb-3">
+                                    {% comment %} <div class="col-3 text-center">
+                                        <img src="{{ task.img }}" alt="{{ task.name }}" class="rounded-circle" style="width: 100px; height: 100px;">
+                                    </div> {% endcomment %}
+                                    <div class="col-9">
+                                        <h2 class="mb-1">Task: {{ task.title }}</h2>
+                                        <p class="text-muted mb-1">Project: {{ task.project.title }}</p>
+                                        <p class="text-muted">
+                                            <i class="far fa-clock text-primary me-2"></i>
+                                            Deadline: {{ task.end_date }}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h5>Description</h5>
+                                        <p>{{ task.description }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <h5>Submit Digital Work</h5>
+                                <form>
+                                    <div class="mb-3">
+                                        <label for="formFile" class="form-label">Upload your work</label>
+                                        <input class="form-control" type="file" id="formFile" name="file">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary me-2">Submit</button>
+                                    <button type="button" class="btn btn-success" onclick="alert('Task marked as done!')">Mark as Done</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
