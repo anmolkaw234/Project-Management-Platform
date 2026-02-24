@@ -14,11 +14,13 @@ ProjectShala is built to address the common challenges in project management, su
 - Security: Robust security features, including data encryption and access control.
 
 ## Tech-Stack
-- ReactJS
-- Django
-- MongoDB
-- HTML
-- Python
+- Django 5.0.7
+- SQLite (dev), PostgreSQL-ready
+- HTML5, CSS3, JavaScript
+- Bootstrap 5
+- Custom EmailBackend + Django Auth
+- WhiteNoise
+- Django FileField/ImageField
 
 ## Running The Program
 - rm -rf .venv
